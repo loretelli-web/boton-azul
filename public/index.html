@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#3A6EA5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Botón Azul — Regulación Emocional Inmediata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { height: 100%; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #F5F2EE;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .app {
+    width: 100%;
+    max-width: 460px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 22px 52px;
+  }
+
+  /* HEADER */
+  .header { width:100%; padding:28px 0 16px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .brand-main { font-family:'Playfair Display',serif; font-size:21px; color:#1E4D7B; letter-spacing:.04em; }
+  .brand-sub { font-size:10px; font-weight:300; letter-spacing:.18em; text-transform:uppercase; color:#6C636E; opacity:.7; }
+  .header-divider { width:32px; height:1.5px; background:#8AB4D8; margin-top:8px; border-radius:2px; }
+
+  /* SCREENS */
+  .screen { display:none; flex-direction:column; align-items:center; width:100%; }
+  .screen.active { display:flex; }
+
+  /* BIENVENIDA */
+  .welcome-eyebrow { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#3A6EA5; font-weight:500; text-align:center; margin-top:24px; }
+  .welcome-title { font-family:'Playfair Display',serif; font-size:34px; line-height:1.2; color:#2C2C2C; margin-top:10px; text-align:center; }
+  .welcome-title em { font-style:italic; color:#3A6EA5; }
+  .welcome-sub { font-size:14px; line-height:1.7; color:#6C636E; margin-top:14px; text-align:center; font-weight:300; max-width:300px; }
+
+  /* BOTÓN */
+  .pulse-wrap { margin:44px 0 32px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .pulse-btn {
+    width:148px; height:148px; border-radius:50%; background:#3A6EA5; border:none; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+    animation:pulseBlue 2.8s ease-in-out infinite; transition:transform .15s;
+    box-shadow:0 8px 32px rgba(58,110,165,.25);
+  }
+  .pulse-btn:active { transform:scale(.95); animation:none; }
+  .pulse-btn-label { font-family:'Playfair Display',serif; font-size:15px; font-style:italic; color:white; text-align:center; line-height:1.3; pointer-events:none; }
+  .pulse-btn-sub { font-size:10px; font-weight:300; color:rgba(255,255,255,.65); letter-spacing:.05em; pointer-events:none; }
+  @keyframes pulseBlue {
+    0%   { box-shadow:0 0 0 0 rgba(58,110,165,.35); }
+    70%  { box-shadow:0 0 0 26px rgba(58,110,165,0); }
+    100% { box-shadow:0 0 0 0 rgba(58,110,165,0); }
+  }
+  .pulse-hint { font-size:12px; color:#6C636E; font-weight:300; opacity:.7; }
+
+  /* SECCIONES */
+  .section-title { font-family:'Playfair Display',serif; font-size:22px; line-height:1.3; text-align:center; color:#2C2C2C; margin-bottom:6px; margin-top:8px; }
+  .section-sub { font-size:13px; color:#6C636E; text-align:center; margin-bottom:22px; font-weight:300; line-height:1.55; }
+
+  /* USUARIO CARDS */
+  .usuario-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; width:100%; }
+  .usuario-card {
+    background:#FAFAF8; border:1.5px solid #D6E8F7; border-radius:16px; padding:18px 12px;
+    cursor:pointer; text-align:center; display:flex; flex-direction:column; align-items:center;
+    gap:7px; transition:all .2s; -webkit-user-select:none;
+  }
+  .usuario-card.selected { border-color:#3A6EA5; background:#D6E8F7; }
+  .usuario-icon { font-size:26px; }
+  .usuario-label { font-size:13px; font-weight:500; color:#2C2C2C; line-height:1.3; }
+  .usuario-sublabel { font-size:11px; font-weight:300; color:#6C636E; line-height:1.3; }
+
+  /* BADGE */
+  .badge { display:inline-flex; align-items:center; gap:6px; background:#D6E8F7; border:1px solid #8AB4D8; border-radius:20px; padding:5px 13px; font-size:12px; color:#1E4D7B; font-weight:500; margin-bottom:18px; margin-top:4px; }
+
+  /* INPUT */
+  .feel-label { font-size:13px; color:#6C636E; margin-bottom:10px; font-weight:300; line-height:1.6; width:100%; }
+  .feel-textarea {
+    width:100%; min-height:110px; border:1.5px solid #D6E8F7; border-radius:14px; padding:14px;
+    font-family:'Poppins',sans-serif; font-size:15px; font-weight:300; color:#2C2C2C;
+    background:#FAFAF8; resize:none; outline:none; transition:border-color .2s; line-height:1.6;
+  }
+  .feel-textarea:focus { border-color:#3A6EA5; }
+
+  /* CHIPS */
+  .chips { display:flex; flex-wrap:wrap; gap:7px; margin:12px 0 18px; width:100%; }
+  .chip {
+    background:#FAFAF8; border:1.5px solid #D6E8F7; border-radius:20px; padding:7px 13px;
+    font-size:12px; cursor:pointer; transition:all .15s; color:#6C636E;
+    font-family:'Poppins',sans-serif; -webkit-user-select:none;
+  }
+  .chip.active { background:#D6E8F7; border-color:#3A6EA5; color:#1E4D7B; }
+
+  /* BOTONES */
+  .btn-main {
+    width:100%; padding:17px; background:#3A6EA5; color:white; border:none; border-radius:14px;
+    font-family:'Poppins',sans-serif; font-size:15px; font-weight:500; cursor:pointer;
+    transition:background .2s,transform .1s; letter-spacing:.01em; -webkit-appearance:none;
+  }
+  .btn-main:active { transform:scale(.98); background:#1E4D7B; }
+  .btn-main:disabled { background:#B8D0E8; cursor:not-allowed; }
+  .btn-ghost {
+    background:none; border:1.5px solid #D6E8F7; color:#6C636E; border-radius:14px; padding:13px;
+    font-family:'Poppins',sans-serif; font-size:14px; cursor:pointer; width:100%; margin-top:10px;
+    transition:all .15s; -webkit-appearance:none;
+  }
+  .btn-ghost:active { border-color:#3A6EA5; color:#1E4D7B; }
+  .back-btn {
+    background:none; border:none; color:#6C636E; font-size:12px; cursor:pointer; padding:8px 0;
+    display:flex; align-items:center; gap:4px; font-family:'Poppins',sans-serif;
+    margin-top:4px; font-weight:300; align-self:flex-start;
+  }
+
+  /* CARGANDO */
+  .loading-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:65vh; gap:22px; width:100%; }
+  .breath-circle { width:88px; height:88px; border-radius:50%; background:#8AB4D8; animation:breathe 4s ease-in-out infinite; opacity:.75; }
+  @keyframes breathe {
+    0%,100% { transform:scale(.82); opacity:.5; }
+    50%      { transform:scale(1.18); opacity:.9; }
+  }
+  .loading-text { font-size:14px; color:#6C636E; font-weight:300; text-align:center; line-height:1.7; }
+  .loading-sub { font-size:11px; color:#8AB4D8; text-align:center; font-weight:300; letter-spacing:.05em; }
+
+  /* RESPUESTA */
+  .response-card { background:#FAFAF8; border-radius:20px; padding:26px 22px; width:100%; margin-top:6px; border:1px solid #D6E8F7; box-shadow:0 4px 24px rgba(58,110,165,.07); }
+  .response-eyebrow { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#3A6EA5; font-weight:500; margin-bottom:14px; }
+  .response-text { font-size:14px; line-height:1.85; color:#2C2C2C; font-weight:300; }
+  .response-text strong { font-weight:600; color:#1E4D7B; display:block; margin:10px 0 6px; font-size:15px; font-family:'Playfair Display',serif; font-style:italic; }
+  .response-text p { margin-bottom:8px; }
+
+  /* ERROR */
+  .error-note { background:#FFF5F5; border:1px solid #F0CECE; border-radius:12px; padding:16px; font-size:13px; color:#7A3A3A; line-height:1.6; width:100%; margin-top:12px; font-weight:300; }
+
+  /* FOOTER */
+  .footer { margin-top:28px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .footer-zf { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:#6C636E; opacity:.45; }
+  .footer-legal { font-size:10px; color:#6C636E; opacity:.35; font-weight:300; max-width:260px; line-height:1.5; }
+
+  .action-row { display:flex; flex-direction:column; gap:10px; width:100%; margin-top:18px; }
+  .mt24 { margin-top:24px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-btn { animation:none; }
+    .breath-circle { animation:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- BIENVENIDA -->
+  <div class="screen active" id="s-welcome">
+    <div class="header">
+      <div class="brand-main">Botón Azul</div>
+      <div class="brand-sub">Sistema de regulación inmediata</div>
+      <div class="header-divider"></div>
+    </div>
+    <div class="welcome-eyebrow">Para cuando ya no podés más</div>
+    <p class="welcome-title">Tu sistema<br>nervioso<br><em>no está roto.</em></p>
+    <p class="welcome-sub">Está en modo supervivencia.<br>Este es tu espacio de pausa.<br>Tres minutos. Un ejercicio. Ahora.</p>
+    <div class="pulse-wrap">
+      <button class="pulse-btn" onclick="goTo('s-usuario')">
+        <span class="pulse-btn-label">Necesito<br>ayuda ahora</span>
+        <span class="pulse-btn-sub">tocá aquí</span>
+      </button>
+      <p class="pulse-hint">Disponible cuando lo necesites</p>
+    </div>
+    <div class="footer">
+      <span class="footer-zf">· Zen Femenino ·</span>
+      <span class="footer-legal">Este espacio no reemplaza atención profesional.</span>
+    </div>
+  </div>
+
+  <!-- USUARIO -->
+  <div class="screen" id="s-usuario">
+    <div class="header">
+      <div class="brand-main">Botón Azul</div>
+      <div class="header-divider"></div>
+    </div>
+    <p class="section-title">¿Desde dónde llegás?</p>
+    <p class="section-sub">Tu situación importa.<br>La respuesta se adapta a lo que estás viviendo.</p>
+    <div class="usuario-grid">
+      <div class="usuario-card" onclick="selectUsuario(this,'💙','Mamá / papá de una persona con TEA','cuidador principal colapsado después de una crisis del hijo o hija con TEA')">
+        <span class="usuario-icon">💙</span>
+        <span class="usuario-label">Soy mamá / papá</span>
+        <span class="usuario-sublabel">de una persona con TEA</span>
+      </div>
+      <div class="usuario-card" onclick="selectUsuario(this,'🤍','Cuidador/a familiar o conviviente','familiar o conviviente que cuida a una persona con TEA y está al límite')">
+        <span class="usuario-icon">🤍</span>
+        <span class="usuario-label">Soy cuidador/a</span>
+        <span class="usuario-sublabel">familiar o conviviente</span>
+      </div>
+      <div class="usuario-card" onclick="selectUsuario(this,'📘','Docente o acompañante terapéutico','docente o AT que trabaja con personas con TEA y necesita regularse rápido para volver al trabajo')">
+        <span class="usuario-icon">📘</span>
+        <span class="usuario-label">Soy docente / AT</span>
+        <span class="usuario-sublabel">o acompañante terapéutico</span>
+      </div>
+      <div class="usuario-card" onclick="selectUsuario(this,'🔵','Adulto autista en crisis sensorial','adulto autista en sobrecarga sensorial o meltdown — instrucciones MUY breves, sin texto largo')">
+        <span class="usuario-icon">🔵</span>
+        <span class="usuario-label">Soy adulto autista</span>
+        <span class="usuario-sublabel">en crisis sensorial</span>
+      </div>
+    </div>
+    <button class="btn-main mt24" id="btn-continuar" disabled onclick="goTo('s-input')">Continuar</button>
+  </div>
+
+  <!-- INPUT -->
+  <div class="screen" id="s-input">
+    <div class="header">
+      <div class="brand-main">Botón Azul</div>
+      <div class="header-divider"></div>
+    </div>
+    <button class="back-btn" onclick="goTo('s-usuario')">← Volver</button>
+    <div id="badge-input"></div>
+    <p class="section-title">¿Qué está pasando?</p>
+    <p class="feel-label" style="margin-top:8px">Escribí cómo te sentís ahora mismo.<br>No tiene que estar ordenado.</p>
+    <textarea class="feel-textarea" id="feel-input"
+      placeholder="Acaba de pasar una crisis, estoy temblando, no puedo parar de llorar..."></textarea>
+    <div class="chips">
+      <div class="chip" onclick="toggleChip(this,'Estallo por dentro')">Estallo por dentro</div>
+      <div class="chip" onclick="toggleChip(this,'Estoy llorando')">Estoy llorando</div>
+      <div class="chip" onclick="toggleChip(this,'Me tiembla el cuerpo')">Me tiembla el cuerpo</div>
+      <div class="chip" onclick="toggleChip(this,'Siento que no puedo más')">Siento que no puedo más</div>
+      <div class="chip" onclick="toggleChip(this,'Estoy furiosa/o')">Estoy furiosa/o</div>
+      <div class="chip" onclick="toggleChip(this,'Me ahogo')">Me ahogo</div>
+      <div class="chip" onclick="toggleChip(this,'Siento culpa')">Siento culpa</div>
+      <div class="chip" onclick="toggleChip(this,'Quiero desaparecer un rato')">Quiero desaparecer un rato</div>
+    </div>
+    <button class="btn-main" onclick="buscarEjercicio()">Necesito un ejercicio ahora</button>
+  </div>
+
+  <!-- CARGANDO -->
+  <div class="screen" id="s-loading">
+    <div class="loading-wrap">
+      <div class="breath-circle"></div>
+      <p class="loading-text">Mientras preparamos tu ejercicio,<br><strong style="font-weight:400">inhalá… exhalá más lento.</strong></p>
+      <p class="loading-sub">Solo este momento. Solo este respiro.</p>
+    </div>
+  </div>
+
+  <!-- RESPUESTA -->
+  <div class="screen" id="s-response">
+    <div class="header">
+      <div class="brand-main">Botón Azul</div>
+      <div class="header-divider"></div>
+    </div>
+    <div id="badge-response"></div>
+    <div id="response-content"></div>
+    <div class="action-row">
+      <button class="btn-main" onclick="otroEjercicio()">Quiero otro ejercicio</button>
+      <button class="btn-ghost" onclick="goTo('s-welcome')">Volver al inicio</button>
+    </div>
+    <div class="footer" style="margin-top:24px">
+      <span class="footer-zf">· Zen Femenino ·</span>
+      <span class="footer-legal">Este espacio no reemplaza atención profesional.</span>
+    </div>
+  </div>
+
+</div>
+<script>
+  let usuarioActual = { icon:'', label:'', contexto:'' };
+  let chipsActivos  = [];
+  const CHIPS_LISTA = ['Estallo por dentro','Estoy llorando','Me tiembla el cuerpo',
+    'Siento que no puedo más','Estoy furiosa/o','Me ahogo','Siento culpa','Quiero desaparecer un rato'];
+
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function selectUsuario(el, icon, label, contexto) {
+    document.querySelectorAll('.usuario-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    usuarioActual = { icon, label, contexto };
+    document.getElementById('btn-continuar').disabled = false;
+    const badge = `<div class="badge">${icon} ${label}</div>`;
+    document.getElementById('badge-input').innerHTML    = badge;
+    document.getElementById('badge-response').innerHTML = badge;
+  }
+
+  function toggleChip(el, texto) {
+    el.classList.toggle('active');
+    chipsActivos = el.classList.contains('active')
+      ? [...chipsActivos, texto]
+      : chipsActivos.filter(c => c !== texto);
+    const ta = document.getElementById('feel-input');
+    const libre = ta.value.split('. ')
+      .map(s => s.trim().replace(/\.$/, ''))
+      .filter(s => s && !CHIPS_LISTA.includes(s))
+      .join('. ');
+    const todo = [libre, ...chipsActivos].filter(Boolean).join('. ');
+    ta.value = todo ? todo + '.' : '';
+  }
+
+  async function buscarEjercicio() {
+    const texto = document.getElementById('feel-input').value.trim();
+    if (!texto) { document.getElementById('feel-input').focus(); return; }
+    goTo('s-loading');
+    try {
+      const res = await fetch('/api/ejercicio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          perfil: `${usuarioActual.label} — ${usuarioActual.contexto}`,
+          situacion: texto
+        })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      const html = data.texto
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .split('\n').map(l => `<p>${l}</p>`).join('');
+      document.getElementById('response-content').innerHTML =
+        `<div class="response-card">
+          <div class="response-eyebrow">Tu ejercicio · ahora mismo</div>
+          <div class="response-text">${html}</div>
+        </div>`;
+      goTo('s-response');
+    } catch(e) {
+      document.getElementById('response-content').innerHTML =
+        `<div class="error-note"><strong>Algo falló.</strong><br><br>
+        Mientras tanto: apoyá una mano en el pecho, otra en la panza.
+        Tres respiraciones largas, exhalando más lento de lo que inhalás.
+        Tu cuerpo sabe qué hacer.</div>`;
+      goTo('s-response');
+    }
+  }
+
+  function otroEjercicio() {
+    document.getElementById('feel-input').value = '';
+    chipsActivos = [];
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    goTo('s-input');
+  }
+</script>
+</body>
+</html>
