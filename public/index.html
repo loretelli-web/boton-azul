@@ -243,7 +243,7 @@
   let usuarioActual   = { icon:'', label:'', contexto:'' };
   let chipsActivos    = [];
   let ejercicioAnterior = '';
-  let usoCount        = parseInt(localStorage.getItem('ba_usos') || '0');
+
 
   const CHIPS_LISTA = ['Estallo por dentro','Estoy llorando','Me tiembla el cuerpo',
     'Siento que no puedo más','Estoy furiosa/o','Me ahogo','Siento culpa',
@@ -286,9 +286,6 @@
   });
 
   async function buscarEjercicio() {
-    // PAYWALL — después del primer uso gratuito
-    if (usoCount >= 1) { goTo('s-paywall'); return; }
-
     const texto = document.getElementById('feel-input').value.trim();
     if (!texto) return;
     goTo('s-loading');
@@ -307,9 +304,6 @@
       if (data.error) throw new Error(data.error);
 
       ejercicioAnterior = data.texto;
-      usoCount++;
-      localStorage.setItem('ba_usos', usoCount.toString());
-
       const html = data.texto
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
         .split('\n').map(l => `<p>${l}</p>`).join('');
@@ -331,8 +325,6 @@
   }
 
   function otroEjercicio() {
-    // Si ya usó el gratuito, va al paywall
-    if (usoCount >= 1) { goTo('s-paywall'); return; }
     document.getElementById('feel-input').value = '';
     chipsActivos = [];
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
