@@ -104,6 +104,9 @@
 </head>
 <body>
 <div class="app">
+  <audio id="bg-music" loop>
+    <source src="/boton azul relaxing music.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- BIENVENIDA -->
   <div class="screen active" id="s-welcome">
@@ -209,7 +212,7 @@
     <div id="response-content"></div>
     <div class="action-row">
       <button class="btn-main" onclick="otroEjercicio()">Quiero otro ejercicio</button>
-      <button class="btn-ghost" onclick="goTo('s-welcome')">Volver al inicio</button>
+      <button class="btn-ghost" onclick="detenerMusica(); goTo('s-welcome')">Volver al inicio</button>
     </div>
     <div class="footer" style="margin-top:24px">
       <span class="footer-zf">· Zen Femenino ·</span>
@@ -231,7 +234,7 @@
       <p class="paywall-trial">5 días de prueba gratuita · Cancelás cuando querés</p>
       <a class="btn-pay" href="https://app.lemonsqueezy.com/share/1139161" target="_blank">Comenzar mi prueba gratuita</a>
     </div>
-    <button class="btn-ghost" style="margin-top:12px" onclick="goTo('s-welcome')">Volver al inicio</button>
+    <button class="btn-ghost" style="margin-top:12px" onclick="detenerMusica(); goTo('s-welcome')">Volver al inicio</button>
     <div class="footer" style="margin-top:24px">
       <span class="footer-zf">· Zen Femenino ·</span>
       <span class="footer-legal">Este espacio no reemplaza atención profesional.</span>
@@ -310,10 +313,14 @@
 
       document.getElementById('response-content').innerHTML =
         `<div class="response-card">
-          <div class="response-eyebrow">Tu ejercicio · ahora mismo</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+              <div class="response-eyebrow" style="margin-bottom:0">Tu ejercicio · ahora mismo</div>
+              <button onclick="toggleMusica()" id="btn-musica" style="background:none;border:1px solid #D6E8F7;border-radius:20px;padding:4px 10px;font-size:11px;color:#8AB4D8;cursor:pointer;font-family:Poppins,sans-serif;">🔊 música</button>
+            </div>
           <div class="response-text">${html}</div>
         </div>`;
       goTo('s-response');
+      iniciarMusica();
     } catch(e) {
       document.getElementById('response-content').innerHTML =
         `<div class="error-note"><strong>Algo falló.</strong><br><br>
@@ -322,6 +329,30 @@
         Tu cuerpo sabe qué hacer.</div>`;
       goTo('s-response');
     }
+  }
+
+  function iniciarMusica() {
+    const audio = document.getElementById('bg-music');
+    audio.volume = 0.35;
+    audio.play().catch(() => {}); // catch por si el navegador bloquea autoplay
+  }
+
+  function toggleMusica() {
+    const audio = document.getElementById('bg-music');
+    const btn   = document.getElementById('btn-musica');
+    if (audio.paused) {
+      audio.play();
+      btn.innerHTML = '🔊 música';
+    } else {
+      audio.pause();
+      btn.innerHTML = '🔇 música';
+    }
+  }
+
+  function detenerMusica() {
+    const audio = document.getElementById('bg-music');
+    audio.pause();
+    audio.currentTime = 0;
   }
 
   function otroEjercicio() {
