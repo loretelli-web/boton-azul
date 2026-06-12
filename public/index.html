@@ -5,37 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#3A6EA5">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Botón Azul — Regulación Emocional Inmediata</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { height: 100%; }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: #F5F2EE;
-    min-height: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  .app {
-    width: 100%;
-    max-width: 460px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 22px 52px;
-  }
+  body { font-family: 'Poppins', sans-serif; background: #F5F2EE; min-height: 100%; display: flex; justify-content: center; }
+  .app { width: 100%; max-width: 460px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0 22px 52px; }
 
-  /* HEADER */
   .header { width:100%; padding:28px 0 16px; display:flex; flex-direction:column; align-items:center; gap:4px; }
   .brand-main { font-family:'Playfair Display',serif; font-size:21px; color:#1E4D7B; letter-spacing:.04em; }
   .brand-sub { font-size:10px; font-weight:300; letter-spacing:.18em; text-transform:uppercase; color:#6C636E; opacity:.7; }
   .header-divider { width:32px; height:1.5px; background:#8AB4D8; margin-top:8px; border-radius:2px; }
 
-  /* SCREENS */
   .screen { display:none; flex-direction:column; align-items:center; width:100%; }
   .screen.active { display:flex; }
 
@@ -45,88 +28,48 @@
   .welcome-title em { font-style:italic; color:#3A6EA5; }
   .welcome-sub { font-size:14px; line-height:1.7; color:#6C636E; margin-top:14px; text-align:center; font-weight:300; max-width:300px; }
 
-  /* BOTÓN */
   .pulse-wrap { margin:44px 0 32px; display:flex; flex-direction:column; align-items:center; gap:14px; }
-  .pulse-btn {
-    width:148px; height:148px; border-radius:50%; background:#3A6EA5; border:none; cursor:pointer;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
-    animation:pulseBlue 2.8s ease-in-out infinite; transition:transform .15s;
-    box-shadow:0 8px 32px rgba(58,110,165,.25);
-  }
+  .pulse-btn { width:148px; height:148px; border-radius:50%; background:#3A6EA5; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; animation:pulseBlue 2.8s ease-in-out infinite; transition:transform .15s; box-shadow:0 8px 32px rgba(58,110,165,.25); }
   .pulse-btn:active { transform:scale(.95); animation:none; }
   .pulse-btn-label { font-family:'Playfair Display',serif; font-size:15px; font-style:italic; color:white; text-align:center; line-height:1.3; pointer-events:none; }
-  .pulse-btn-sub { font-size:10px; font-weight:300; color:rgba(255,255,255,.65); letter-spacing:.05em; pointer-events:none; }
-  @keyframes pulseBlue {
-    0%   { box-shadow:0 0 0 0 rgba(58,110,165,.35); }
-    70%  { box-shadow:0 0 0 26px rgba(58,110,165,0); }
-    100% { box-shadow:0 0 0 0 rgba(58,110,165,0); }
-  }
+  .pulse-btn-sub { font-size:10px; font-weight:300; color:rgba(255,255,255,.65); pointer-events:none; }
+  @keyframes pulseBlue { 0%{box-shadow:0 0 0 0 rgba(58,110,165,.35)}70%{box-shadow:0 0 0 26px rgba(58,110,165,0)}100%{box-shadow:0 0 0 0 rgba(58,110,165,0)} }
   .pulse-hint { font-size:12px; color:#6C636E; font-weight:300; opacity:.7; }
 
-  /* SECCIONES */
   .section-title { font-family:'Playfair Display',serif; font-size:22px; line-height:1.3; text-align:center; color:#2C2C2C; margin-bottom:6px; margin-top:8px; }
   .section-sub { font-size:13px; color:#6C636E; text-align:center; margin-bottom:22px; font-weight:300; line-height:1.55; }
 
-  /* USUARIO CARDS */
   .usuario-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; width:100%; }
-  .usuario-card {
-    background:#FAFAF8; border:1.5px solid #D6E8F7; border-radius:16px; padding:18px 12px;
-    cursor:pointer; text-align:center; display:flex; flex-direction:column; align-items:center;
-    gap:7px; transition:all .2s; -webkit-user-select:none;
-  }
+  .usuario-card { background:#FAFAF8; border:1.5px solid #D6E8F7; border-radius:16px; padding:18px 12px; cursor:pointer; text-align:center; display:flex; flex-direction:column; align-items:center; gap:7px; transition:all .2s; -webkit-user-select:none; }
   .usuario-card.selected { border-color:#3A6EA5; background:#D6E8F7; }
   .usuario-icon { font-size:26px; }
   .usuario-label { font-size:13px; font-weight:500; color:#2C2C2C; line-height:1.3; }
   .usuario-sublabel { font-size:11px; font-weight:300; color:#6C636E; line-height:1.3; }
 
-  /* BADGE */
   .badge { display:inline-flex; align-items:center; gap:6px; background:#D6E8F7; border:1px solid #8AB4D8; border-radius:20px; padding:5px 13px; font-size:12px; color:#1E4D7B; font-weight:500; margin-bottom:18px; margin-top:4px; }
 
   /* INPUT */
-  .feel-label { font-size:13px; color:#6C636E; margin-bottom:10px; font-weight:300; line-height:1.6; width:100%; }
-  .feel-textarea {
-    width:100%; min-height:110px; border:1.5px solid #D6E8F7; border-radius:14px; padding:14px;
-    font-family:'Poppins',sans-serif; font-size:15px; font-weight:300; color:#2C2C2C;
-    background:#FAFAF8; resize:none; outline:none; transition:border-color .2s; line-height:1.6;
-  }
+  .input-hint { font-size:12px; color:#8AB4D8; font-weight:300; margin-bottom:8px; width:100%; font-style:italic; }
+  .feel-label { font-size:13px; color:#6C636E; margin-bottom:8px; font-weight:300; line-height:1.6; width:100%; }
+  .feel-textarea { width:100%; min-height:100px; border:1.5px solid #D6E8F7; border-radius:14px; padding:14px; font-family:'Poppins',sans-serif; font-size:15px; font-weight:300; color:#2C2C2C; background:#FAFAF8; resize:none; outline:none; transition:border-color .2s; line-height:1.6; }
   .feel-textarea:focus { border-color:#3A6EA5; }
 
-  /* CHIPS */
-  .chips { display:flex; flex-wrap:wrap; gap:7px; margin:12px 0 18px; width:100%; }
-  .chip {
-    background:#FAFAF8; border:1.5px solid #D6E8F7; border-radius:20px; padding:7px 13px;
-    font-size:12px; cursor:pointer; transition:all .15s; color:#6C636E;
-    font-family:'Poppins',sans-serif; -webkit-user-select:none;
-  }
+  .chips-label { font-size:11px; color:#8AB4D8; font-weight:400; margin-bottom:8px; width:100%; letter-spacing:.05em; text-transform:uppercase; }
+  .chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; width:100%; }
+  .chip { background:#FAFAF8; border:1.5px solid #D6E8F7; border-radius:20px; padding:7px 13px; font-size:12px; cursor:pointer; transition:all .15s; color:#6C636E; font-family:'Poppins',sans-serif; -webkit-user-select:none; }
   .chip.active { background:#D6E8F7; border-color:#3A6EA5; color:#1E4D7B; }
 
-  /* BOTONES */
-  .btn-main {
-    width:100%; padding:17px; background:#3A6EA5; color:white; border:none; border-radius:14px;
-    font-family:'Poppins',sans-serif; font-size:15px; font-weight:500; cursor:pointer;
-    transition:background .2s,transform .1s; letter-spacing:.01em; -webkit-appearance:none;
-  }
+  .btn-main { width:100%; padding:17px; background:#3A6EA5; color:white; border:none; border-radius:14px; font-family:'Poppins',sans-serif; font-size:15px; font-weight:500; cursor:pointer; transition:background .2s,transform .1s; -webkit-appearance:none; }
   .btn-main:active { transform:scale(.98); background:#1E4D7B; }
   .btn-main:disabled { background:#B8D0E8; cursor:not-allowed; }
-  .btn-ghost {
-    background:none; border:1.5px solid #D6E8F7; color:#6C636E; border-radius:14px; padding:13px;
-    font-family:'Poppins',sans-serif; font-size:14px; cursor:pointer; width:100%; margin-top:10px;
-    transition:all .15s; -webkit-appearance:none;
-  }
+  .btn-ghost { background:none; border:1.5px solid #D6E8F7; color:#6C636E; border-radius:14px; padding:13px; font-family:'Poppins',sans-serif; font-size:14px; cursor:pointer; width:100%; margin-top:10px; -webkit-appearance:none; }
   .btn-ghost:active { border-color:#3A6EA5; color:#1E4D7B; }
-  .back-btn {
-    background:none; border:none; color:#6C636E; font-size:12px; cursor:pointer; padding:8px 0;
-    display:flex; align-items:center; gap:4px; font-family:'Poppins',sans-serif;
-    margin-top:4px; font-weight:300; align-self:flex-start;
-  }
+  .back-btn { background:none; border:none; color:#6C636E; font-size:12px; cursor:pointer; padding:8px 0; display:flex; align-items:center; gap:4px; font-family:'Poppins',sans-serif; margin-top:4px; font-weight:300; align-self:flex-start; }
 
   /* CARGANDO */
   .loading-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:65vh; gap:22px; width:100%; }
   .breath-circle { width:88px; height:88px; border-radius:50%; background:#8AB4D8; animation:breathe 4s ease-in-out infinite; opacity:.75; }
-  @keyframes breathe {
-    0%,100% { transform:scale(.82); opacity:.5; }
-    50%      { transform:scale(1.18); opacity:.9; }
-  }
+  @keyframes breathe { 0%,100%{transform:scale(.82);opacity:.5}50%{transform:scale(1.18);opacity:.9} }
   .loading-text { font-size:14px; color:#6C636E; font-weight:300; text-align:center; line-height:1.7; }
   .loading-sub { font-size:11px; color:#8AB4D8; text-align:center; font-weight:300; letter-spacing:.05em; }
 
@@ -137,10 +80,18 @@
   .response-text strong { font-weight:600; color:#1E4D7B; display:block; margin:10px 0 6px; font-size:15px; font-family:'Playfair Display',serif; font-style:italic; }
   .response-text p { margin-bottom:8px; }
 
-  /* ERROR */
+  /* PAYWALL */
+  .paywall-card { background:#FAFAF8; border-radius:20px; padding:28px 22px; width:100%; margin-top:6px; border:1.5px solid #3A6EA5; text-align:center; }
+  .paywall-icon { font-size:36px; margin-bottom:12px; }
+  .paywall-title { font-family:'Playfair Display',serif; font-size:22px; color:#1E4D7B; margin-bottom:10px; line-height:1.3; }
+  .paywall-sub { font-size:13px; color:#6C636E; font-weight:300; line-height:1.6; margin-bottom:20px; }
+  .paywall-price { font-size:28px; font-weight:600; color:#3A6EA5; margin-bottom:4px; }
+  .paywall-trial { font-size:12px; color:#8AB4D8; margin-bottom:20px; font-weight:300; }
+  .btn-pay { width:100%; padding:17px; background:#3A6EA5; color:white; border:none; border-radius:14px; font-family:'Poppins',sans-serif; font-size:15px; font-weight:500; cursor:pointer; text-decoration:none; display:block; text-align:center; -webkit-appearance:none; }
+  .btn-pay:active { background:#1E4D7B; }
+
   .error-note { background:#FFF5F5; border:1px solid #F0CECE; border-radius:12px; padding:16px; font-size:13px; color:#7A3A3A; line-height:1.6; width:100%; margin-top:12px; font-weight:300; }
 
-  /* FOOTER */
   .footer { margin-top:28px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:4px; }
   .footer-zf { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:#6C636E; opacity:.45; }
   .footer-legal { font-size:10px; color:#6C636E; opacity:.35; font-weight:300; max-width:260px; line-height:1.5; }
@@ -148,10 +99,7 @@
   .action-row { display:flex; flex-direction:column; gap:10px; width:100%; margin-top:18px; }
   .mt24 { margin-top:24px; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .pulse-btn { animation:none; }
-    .breath-circle { animation:none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .pulse-btn,.breath-circle { animation:none; } }
 </style>
 </head>
 <body>
@@ -189,7 +137,7 @@
     <p class="section-title">¿Desde dónde llegás?</p>
     <p class="section-sub">Tu situación importa.<br>La respuesta se adapta a lo que estás viviendo.</p>
     <div class="usuario-grid">
-      <div class="usuario-card" onclick="selectUsuario(this,'💙','Mamá / papá de una persona con TEA','cuidador principal colapsado después de una crisis del hijo o hija con TEA')">
+      <div class="usuario-card" onclick="selectUsuario(this,'💙','Mamá / papá de una persona con TEA','cuidador principal colapsado — vive la lucha entre proteger al hijo y protegerse a sí mismo')">
         <span class="usuario-icon">💙</span>
         <span class="usuario-label">Soy mamá / papá</span>
         <span class="usuario-sublabel">de una persona con TEA</span>
@@ -199,12 +147,12 @@
         <span class="usuario-label">Soy cuidador/a</span>
         <span class="usuario-sublabel">familiar o conviviente</span>
       </div>
-      <div class="usuario-card" onclick="selectUsuario(this,'📘','Docente o acompañante terapéutico','docente o AT que trabaja con personas con TEA y necesita regularse rápido para volver al trabajo')">
+      <div class="usuario-card" onclick="selectUsuario(this,'📘','Docente o acompañante terapéutico','trabaja con personas con TEA y necesita regularse rápido para volver al trabajo')">
         <span class="usuario-icon">📘</span>
         <span class="usuario-label">Soy docente / AT</span>
         <span class="usuario-sublabel">o acompañante terapéutico</span>
       </div>
-      <div class="usuario-card" onclick="selectUsuario(this,'🔵','Adulto autista en crisis sensorial','adulto autista en sobrecarga sensorial o meltdown — instrucciones MUY breves, sin texto largo')">
+      <div class="usuario-card" onclick="selectUsuario(this,'🔵','Adulto autista en crisis sensorial','sobrecarga sensorial o meltdown — necesita instrucciones muy breves y directas')">
         <span class="usuario-icon">🔵</span>
         <span class="usuario-label">Soy adulto autista</span>
         <span class="usuario-sublabel">en crisis sensorial</span>
@@ -222,9 +170,10 @@
     <button class="back-btn" onclick="goTo('s-usuario')">← Volver</button>
     <div id="badge-input"></div>
     <p class="section-title">¿Qué está pasando?</p>
-    <p class="feel-label" style="margin-top:8px">Escribí cómo te sentís ahora mismo.<br>No tiene que estar ordenado.</p>
+    <p class="feel-label" style="margin-top:8px">Escribí cómo te sentís ahora mismo, o tocá una o más opciones de abajo. Podés hacer las dos cosas.</p>
     <textarea class="feel-textarea" id="feel-input"
       placeholder="Acaba de pasar una crisis, estoy temblando, no puedo parar de llorar..."></textarea>
+    <p class="chips-label" style="margin-top:12px">O elegí lo que más te resuena</p>
     <div class="chips">
       <div class="chip" onclick="toggleChip(this,'Estallo por dentro')">Estallo por dentro</div>
       <div class="chip" onclick="toggleChip(this,'Estoy llorando')">Estoy llorando</div>
@@ -234,8 +183,11 @@
       <div class="chip" onclick="toggleChip(this,'Me ahogo')">Me ahogo</div>
       <div class="chip" onclick="toggleChip(this,'Siento culpa')">Siento culpa</div>
       <div class="chip" onclick="toggleChip(this,'Quiero desaparecer un rato')">Quiero desaparecer un rato</div>
+      <div class="chip" onclick="toggleChip(this,'Estoy contracturada/o')">Estoy contracturada/o</div>
+      <div class="chip" onclick="toggleChip(this,'Él ya se calmó pero yo no')">Él ya se calmó pero yo no</div>
+      <div class="chip" onclick="toggleChip(this,'Necesito reconectar con él')">Necesito reconectar con él</div>
     </div>
-    <button class="btn-main" onclick="buscarEjercicio()">Necesito un ejercicio ahora</button>
+    <button class="btn-main" id="btn-ejercicio" disabled onclick="buscarEjercicio()">Necesito un ejercicio ahora</button>
   </div>
 
   <!-- CARGANDO -->
@@ -265,12 +217,38 @@
     </div>
   </div>
 
+  <!-- PAYWALL -->
+  <div class="screen" id="s-paywall">
+    <div class="header">
+      <div class="brand-main">Botón Azul</div>
+      <div class="header-divider"></div>
+    </div>
+    <div class="paywall-card">
+      <div class="paywall-icon">💙</div>
+      <p class="paywall-title">Tu primer ejercicio<br>fue gratuito.</p>
+      <p class="paywall-sub">Botón Azul está diseñado para estar ahí cada vez que lo necesités — no solo una vez. Suscribite y tenés acceso ilimitado por menos de lo que cuesta un café.</p>
+      <p class="paywall-price">USD 9,99<span style="font-size:14px;font-weight:300;color:#6C636E">/mes</span></p>
+      <p class="paywall-trial">5 días de prueba gratuita · Cancelás cuando querés</p>
+      <a class="btn-pay" href="https://app.lemonsqueezy.com/share/1139161" target="_blank">Comenzar mi prueba gratuita</a>
+    </div>
+    <button class="btn-ghost" style="margin-top:12px" onclick="goTo('s-welcome')">Volver al inicio</button>
+    <div class="footer" style="margin-top:24px">
+      <span class="footer-zf">· Zen Femenino ·</span>
+      <span class="footer-legal">Este espacio no reemplaza atención profesional.</span>
+    </div>
+  </div>
+
 </div>
 <script>
-  let usuarioActual = { icon:'', label:'', contexto:'' };
-  let chipsActivos  = [];
+  let usuarioActual   = { icon:'', label:'', contexto:'' };
+  let chipsActivos    = [];
+  let ejercicioAnterior = '';
+  let usoCount        = parseInt(localStorage.getItem('ba_usos') || '0');
+
   const CHIPS_LISTA = ['Estallo por dentro','Estoy llorando','Me tiembla el cuerpo',
-    'Siento que no puedo más','Estoy furiosa/o','Me ahogo','Siento culpa','Quiero desaparecer un rato'];
+    'Siento que no puedo más','Estoy furiosa/o','Me ahogo','Siento culpa',
+    'Quiero desaparecer un rato','Estoy contracturada/o','Él ya se calmó pero yo no',
+    'Necesito reconectar con él'];
 
   function goTo(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -300,26 +278,42 @@
       .join('. ');
     const todo = [libre, ...chipsActivos].filter(Boolean).join('. ');
     ta.value = todo ? todo + '.' : '';
+    document.getElementById('btn-ejercicio').disabled = !ta.value.trim();
   }
 
+  document.getElementById('feel-input').addEventListener('input', function() {
+    document.getElementById('btn-ejercicio').disabled = !this.value.trim();
+  });
+
   async function buscarEjercicio() {
+    // PAYWALL — después del primer uso gratuito
+    if (usoCount >= 1) { goTo('s-paywall'); return; }
+
     const texto = document.getElementById('feel-input').value.trim();
-    if (!texto) { document.getElementById('feel-input').focus(); return; }
+    if (!texto) return;
     goTo('s-loading');
+
     try {
       const res = await fetch('/api/ejercicio', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           perfil: `${usuarioActual.label} — ${usuarioActual.contexto}`,
-          situacion: texto
+          situacion: texto,
+          ejercicioAnterior: ejercicioAnterior || ''
         })
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
+
+      ejercicioAnterior = data.texto;
+      usoCount++;
+      localStorage.setItem('ba_usos', usoCount.toString());
+
       const html = data.texto
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
         .split('\n').map(l => `<p>${l}</p>`).join('');
+
       document.getElementById('response-content').innerHTML =
         `<div class="response-card">
           <div class="response-eyebrow">Tu ejercicio · ahora mismo</div>
@@ -329,7 +323,7 @@
     } catch(e) {
       document.getElementById('response-content').innerHTML =
         `<div class="error-note"><strong>Algo falló.</strong><br><br>
-        Mientras tanto: apoyá una mano en el pecho, otra en la panza.
+        Apoyá una mano en el pecho, otra en la panza.
         Tres respiraciones largas, exhalando más lento de lo que inhalás.
         Tu cuerpo sabe qué hacer.</div>`;
       goTo('s-response');
@@ -337,9 +331,12 @@
   }
 
   function otroEjercicio() {
+    // Si ya usó el gratuito, va al paywall
+    if (usoCount >= 1) { goTo('s-paywall'); return; }
     document.getElementById('feel-input').value = '';
     chipsActivos = [];
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    document.getElementById('btn-ejercicio').disabled = true;
     goTo('s-input');
   }
 </script>
