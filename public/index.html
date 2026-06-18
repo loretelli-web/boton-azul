@@ -242,6 +242,12 @@
       <p class="paywall-price">USD 9,99<span style="font-size:14px;font-weight:300;color:#6C636E">/mes</span></p>
       <p class="paywall-trial">5 días de prueba gratuita · Cancelás cuando querés</p>
       <a class="btn-pay" href="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=11396624d8aa418b959200809efe0b43" target="_blank">Suscribirme · 5 días gratis</a>
+      <div style="margin-top:22px; padding-top:20px; border-top:1px solid #E0E8F0;">
+        <p style="font-size:13px; color:#6C636E; margin-bottom:10px; font-weight:300;">¿Ya te suscribiste? Ingresá tu código de acceso</p>
+        <input type="text" id="codigo-input" placeholder="Tu código" style="width:100%; padding:12px; border:1.5px solid #C5D8E8; border-radius:10px; font-family:'Poppins',sans-serif; font-size:14px; text-align:center; text-transform:uppercase; outline:none; margin-bottom:10px;">
+        <button class="btn-main" onclick="validarCodigo()" style="font-size:14px;">Desbloquear acceso</button>
+        <p id="codigo-error" style="display:none; font-size:12px; color:#C0392B; margin-top:8px;">Código incorrecto. Revisá e intentá de nuevo.</p>
+      </div>
     </div>
     <button class="btn-ghost" style="margin-top:12px" onclick="detenerMusica(); goTo('s-welcome')">Volver al inicio</button>
     <div class="footer" style="margin-top:24px">
@@ -256,7 +262,33 @@
   let chipsActivos    = [];
   let ejercicioAnterior = '';
   let usoCount = parseInt(localStorage.getItem('ba_usos') || '0');
+  let esSuscriptor = localStorage.getItem('ba_suscriptor') === 'si';
 
+  // Desbloqueo automático: si vuelve de Mercado Pago con ?acceso=ok, queda suscriptor
+  (function checkAcceso() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('acceso') === 'ok' || params.get('collection_status') === 'approved' || params.get('status') === 'approved') {
+      localStorage.setItem('ba_suscriptor', 'si');
+      esSuscriptor = true;
+    }
+  })();
+
+  // Código de acceso para suscriptores de Botón Azul (respaldo manual)
+  const CODIGO_ACCESO = 'AZUL2026';
+
+  function validarCodigo() {
+    const input = document.getElementById('codigo-input');
+    const error = document.getElementById('codigo-error');
+    const valor = (input.value || '').trim().toUpperCase();
+    if (valor === CODIGO_ACCESO) {
+      localStorage.setItem('ba_suscriptor', 'si');
+      esSuscriptor = true;
+      error.style.display = 'none';
+      goTo('s-input');
+    } else {
+      error.style.display = 'block';
+    }
+  }
 
   const CHIPS_LISTA = ['Estallo por dentro','Estoy llorando','Me tiembla el cuerpo',
     'Siento que no puedo más','Estoy furiosa/o','Me ahogo','Siento culpa',
@@ -300,7 +332,7 @@
 
   async function buscarEjercicio() {
     // PAYWALL — después de 3 ejercicios gratuitos
-    if (usoCount >= 3) { goTo('s-paywall'); return; }
+    if (!esSuscriptor && usoCount >= 3) { goTo("s-paywall"); return; }
 
     const texto = document.getElementById('feel-input').value.trim();
     if (!texto) return;
@@ -371,7 +403,7 @@
   }
 
   function otroEjercicio() {
-    if (usoCount >= 3) { goTo('s-paywall'); return; }
+    if (!esSuscriptor && usoCount >= 3) { goTo("s-paywall"); return; }
     document.getElementById('feel-input').value = '';
     chipsActivos = [];
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
