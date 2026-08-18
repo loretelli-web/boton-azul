@@ -410,7 +410,7 @@
             </div>
           <div class="response-text">${html}</div>
         </div>`;
-      irARespuestaOConRegistro();
+      goTo('s-response');
       iniciarMusica();
     } catch(e) {
       document.getElementById('response-content').innerHTML =
@@ -453,20 +453,18 @@
     return localStorage.getItem('ba_registrado') === 'si';
   }
 
-  function irARespuestaOConRegistro() {
-    // Si ya se registró o ya decidió saltear, va directo a la respuesta.
-    // Si es la primera vez, le mostramos el registro (después de ver su ejercicio).
-    if (yaRegistrado() || localStorage.getItem('ba_registro_salteado') === 'si') {
-      goTo('s-response');
-    } else {
-      goTo('s-registro');
-    }
+  function saltearRegistro() {
+    // No lo registró, pero no le insistimos más
+    localStorage.setItem('ba_registro_salteado', 'si');
+    irAInputNuevo();
   }
 
-  function saltearRegistro() {
-    // No lo registró, pero no le insistimos más en esta sesión
-    localStorage.setItem('ba_registro_salteado', 'si');
-    goTo('s-response');
+  function irAInputNuevo() {
+    document.getElementById('feel-input').value = '';
+    chipsActivos = [];
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    document.getElementById('btn-ejercicio').disabled = true;
+    goTo('s-input');
   }
 
   function enviarRegistro() {
@@ -500,16 +498,20 @@
       body: JSON.stringify({ nombre, apellido, edad, email, telefono })
     }).catch(function(){ /* si falla, igual seguimos: el dato quedó guardado localmente */ });
 
-    // Pasamos al ejercicio enseguida, sin hacerla esperar
+    // Pasamos a escribir el nuevo ejercicio, sin hacerla esperar
     setTimeout(function(){
       btn.textContent = 'Continuar';
       btn.disabled = false;
-      goTo('s-response');
+      irAInputNuevo();
     }, 600);
   }
 
   function otroEjercicio() {
-    if (!esSuscriptor && usoCount >= 3) { goTo("s-paywall"); return; }
+    // Si todavía no se registró ni salteó, le pedimos el registro antes del 2do ejercicio
+    if (!yaRegistrado() && localStorage.getItem('ba_registro_salteado') !== 'si') {
+      goTo('s-registro');
+      return;
+    }
     document.getElementById('feel-input').value = '';
     chipsActivos = [];
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
