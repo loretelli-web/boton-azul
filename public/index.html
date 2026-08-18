@@ -127,6 +127,7 @@
     <div class="welcome-eyebrow">Para cuando ya no podés más</div>
     <p class="welcome-title">Tu sistema<br>nervioso<br><em>no está roto.</em></p>
     <p class="welcome-sub">Está en modo supervivencia.<br>Este es tu espacio de pausa.<br>Tres minutos. Un ejercicio. Ahora.</p>
+    <p style="font-size:12px;line-height:1.6;color:#3A6EA5;margin-top:16px;text-align:center;font-weight:500;max-width:300px;background:#EAF2FA;padding:12px 16px;border-radius:12px;">💙 Botón Azul es de uso libre y gratuito para las familias y cuidadores de personas con TEA.</p>
     <div class="pulse-wrap">
       <button class="pulse-btn" onclick="goTo('s-usuario')">
         <span class="pulse-btn-label">Necesito<br>ayuda ahora</span>
@@ -229,6 +230,26 @@
     </div>
   </div>
 
+  <!-- REGISTRO -->
+  <div class="screen" id="s-registro">
+    <div class="header">
+      <div class="brand-main">Botón Azul</div>
+      <div class="header-divider"></div>
+    </div>
+    <p class="section-title">Antes de seguir 💙</p>
+    <p class="section-sub">Botón Azul es gratuito para vos. Si querés, dejanos tus datos: nos ayuda a saber a quién estamos acompañando y a avisarte cuando sumemos cosas nuevas.</p>
+    <div style="max-width:340px;margin:20px auto 0;text-align:left;">
+      <input type="text" id="reg-nombre" placeholder="Nombre" style="width:100%;padding:13px;border:1.5px solid #C5D8E8;border-radius:10px;font-family:'Poppins',sans-serif;font-size:14px;outline:none;margin-bottom:10px;">
+      <input type="text" id="reg-apellido" placeholder="Apellido" style="width:100%;padding:13px;border:1.5px solid #C5D8E8;border-radius:10px;font-family:'Poppins',sans-serif;font-size:14px;outline:none;margin-bottom:10px;">
+      <input type="email" id="reg-email" placeholder="Email" style="width:100%;padding:13px;border:1.5px solid #C5D8E8;border-radius:10px;font-family:'Poppins',sans-serif;font-size:14px;outline:none;margin-bottom:10px;">
+      <input type="number" id="reg-edad" placeholder="Edad (opcional)" style="width:100%;padding:13px;border:1.5px solid #C5D8E8;border-radius:10px;font-family:'Poppins',sans-serif;font-size:14px;outline:none;margin-bottom:10px;">
+      <input type="tel" id="reg-telefono" placeholder="Teléfono / WhatsApp (opcional)" style="width:100%;padding:13px;border:1.5px solid #C5D8E8;border-radius:10px;font-family:'Poppins',sans-serif;font-size:14px;outline:none;margin-bottom:10px;">
+      <p id="reg-error" style="display:none;font-size:12px;color:#C0392B;margin:4px 0 10px;">Completá al menos tu nombre y un email válido.</p>
+      <button class="btn-main" onclick="enviarRegistro()" id="btn-reg">Continuar</button>
+      <button class="btn-ghost" style="margin-top:8px" onclick="saltearRegistro()">Ahora no, seguir usando</button>
+    </div>
+  </div>
+
   <!-- PAYWALL -->
   <div class="screen" id="s-paywall">
     <div class="header">
@@ -264,7 +285,7 @@
   let chipsActivos    = [];
   let ejercicioAnterior = '';
   let usoCount = parseInt(localStorage.getItem('ba_usos') || '0');
-  let esSuscriptor = localStorage.getItem('ba_suscriptor') === 'si';
+  let esSuscriptor = true; // Botón Azul es gratuito para la comunidad TEA
 
   // Desbloqueo automático: si vuelve de Mercado Pago con ?acceso=ok, queda suscriptor
   (function checkAcceso() {
@@ -389,7 +410,7 @@
             </div>
           <div class="response-text">${html}</div>
         </div>`;
-      goTo('s-response');
+      irARespuestaOConRegistro();
       iniciarMusica();
     } catch(e) {
       document.getElementById('response-content').innerHTML =
@@ -423,6 +444,68 @@
     const audio = document.getElementById('bg-music');
     audio.pause();
     audio.currentTime = 0;
+  }
+
+  // ===== REGISTRO DE USUARIOS =====
+  const REGISTRO_URL = 'https://script.google.com/macros/s/AKfycbxiY_e68JIpmDPRdE01t1htP1-Ld-8_om1PnK5OOJCn1hEBt7QEEgqWkXfiwhH7R9AX/exec';
+
+  function yaRegistrado() {
+    return localStorage.getItem('ba_registrado') === 'si';
+  }
+
+  function irARespuestaOConRegistro() {
+    // Si ya se registró o ya decidió saltear, va directo a la respuesta.
+    // Si es la primera vez, le mostramos el registro (después de ver su ejercicio).
+    if (yaRegistrado() || localStorage.getItem('ba_registro_salteado') === 'si') {
+      goTo('s-response');
+    } else {
+      goTo('s-registro');
+    }
+  }
+
+  function saltearRegistro() {
+    // No lo registró, pero no le insistimos más en esta sesión
+    localStorage.setItem('ba_registro_salteado', 'si');
+    goTo('s-response');
+  }
+
+  function enviarRegistro() {
+    const nombre = (document.getElementById('reg-nombre').value || '').trim();
+    const apellido = (document.getElementById('reg-apellido').value || '').trim();
+    const email = (document.getElementById('reg-email').value || '').trim();
+    const edad = (document.getElementById('reg-edad').value || '').trim();
+    const telefono = (document.getElementById('reg-telefono').value || '').trim();
+    const error = document.getElementById('reg-error');
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!nombre || !emailValido) {
+      error.style.display = 'block';
+      return;
+    }
+    error.style.display = 'none';
+
+    const btn = document.getElementById('btn-reg');
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
+
+    // Guardamos localmente que ya se registró
+    localStorage.setItem('ba_registrado', 'si');
+    localStorage.setItem('ba_email_registro', email);
+
+    // Enviamos a la planilla (sin bloquear la experiencia)
+    fetch(REGISTRO_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ nombre, apellido, edad, email, telefono })
+    }).catch(function(){ /* si falla, igual seguimos: el dato quedó guardado localmente */ });
+
+    // Pasamos al ejercicio enseguida, sin hacerla esperar
+    setTimeout(function(){
+      btn.textContent = 'Continuar';
+      btn.disabled = false;
+      goTo('s-response');
+    }, 600);
   }
 
   function otroEjercicio() {
